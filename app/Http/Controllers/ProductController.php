@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
-use Yajra\Datatables\Facades\Datatables;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -15,7 +15,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::
+          leftJoin('product_send', 'product.id', '=', 'product_send.id_product')
+        ->leftJoin('client', 'product_send.id_client', '=', 'client.id')
+        /* ->where('product_send.status', null) */ //Não se aplica, deixei apenas para referência
+        ->select('product.id', 'sku', 'product.name', 'description', 'price', 'product_send.status', 'client.name as client_name')
+        ->orderBy('product.id', 'asc')
+        ->paginate(10);
         return view('product.index', ['products' => $products]);
     }
 
@@ -59,21 +65,18 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $products = Product::where('id', $request->id)->get();
+        return view('product.show', compact('products'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $id)
     {
         //
     }
@@ -82,22 +85,33 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        Product::where('id', $request->id)
+                ->update([  'name' => $request->name,
+                            'price' => str_replace(',', '.', str_replace('.', '', $request->price)),
+                            'description' => $request->description,
+                            ]);
+
+        return redirect()->route('product');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        /*
+        Para manter a integridade dos dados, correto é ter uma coluna de "situação" no banco de dados
+        e fazer um update no dado marcando ele como inativo,
+        mas a critério de demonstração eu criei esta opção para realmente excluir o registro.
+        */
+        if(Auth::user()->id == 1) {
+        $products = Product::where('id', $request->id);
+        $products->delete();
+        }
     }
 }
