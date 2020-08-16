@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\ProductSend;
+use App\Model\ProductSend;
 use Exception;
 use DB;
 

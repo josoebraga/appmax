@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Product;
-use App\ProductApiModel;
+use App\Model\Product;
+use App\Model\ProductApiModel;
 use Exception;
 use DB;
 

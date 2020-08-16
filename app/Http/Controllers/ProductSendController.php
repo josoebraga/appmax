@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Exception;
-use App\Product;
-use App\ProductSend;
-use App\Client;
+use App\Model\Product;
+use App\Model\ProductSend;
+use App\Model\Client;
 Use DB;
 
 class ProductSendController extends Controller
@@ -26,7 +26,6 @@ class ProductSendController extends Controller
                 SELECT * FROM appmax.product_send ps WHERE ps.id_product = p.id
             )
         ");
-        dd($productsToSend);
     }
 
     /**
