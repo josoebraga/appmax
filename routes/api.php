@@ -18,6 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/baixar-produtos/{id}/{idClient}',['as'=>'baixarProdutos','uses'=>'BaixarProdutos@toArray']);
-Route::get('/adicionar-produtos/{name}/{price}/{description}',['as'=>'adicionarProdutos','uses'=>'AdicionarProdutos@toArray']);
+Route::get('/baixar-produtos/{id}/{idClient}',['as'=>'baixarProdutos','uses'=>'Api\BaixarProdutos@toArray']);
+Route::get('/adicionar-produtos/{name}/{price}/{description}',['as'=>'adicionarProdutos','uses'=>'Api\AdicionarProdutos@toArray']);
 
