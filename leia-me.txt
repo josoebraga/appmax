@@ -1,0 +1,15 @@
+Para que o projeto funcione, execute os seguintes comandos:
+
+1 - composer install
+
+2 - Extrair o .env.zip e executar o seguinte comando: php artisan key:generate
+
+3 - Criar um novo banco de dados mySql chamado: appmax
+
+4 - php artisan migrate
+
+5 - php artisan db:seed
+
+6 - php artisan serve
+
+7 - Provavelmente a url do projeto será: http://127.0.0.1:8000/
